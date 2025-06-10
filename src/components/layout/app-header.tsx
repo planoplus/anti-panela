@@ -8,10 +8,10 @@ export function AppHeader() {
         <div className="flex items-center justify-center mb-1">
           <SoccerBallIcon className="h-10 w-10 mr-3 text-primary" />
           <h1 className="text-4xl md:text-5xl font-headline">
-            BraLiga - <span className="text-primary">Edition: Anti-Panela</span>
+            BraLiga - <span className="text-white">Edition: Anti-Panela</span>
           </h1>
         </div>
-        <p className="text-lg text-white/70">Sorteador justo de equipes para futebol</p>
+        <p className="text-lg text-white/70">Uma luta dos peladeiros do BRA contra a Panela</p>
       </div>
     </header>
   );

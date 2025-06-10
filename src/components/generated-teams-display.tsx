@@ -23,19 +23,18 @@ export function GeneratedTeamsDisplay({ teams, onExportText }: GeneratedTeamsDis
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground py-8">Nenhuma equipe gerada ainda. Confira o histórico ou gere novas equipes (se aplicável).</p>
+          <p className="text-muted-foreground py-8">Nenhuma equipe gerada ainda. Configure e gere novas equipes ou verifique o histórico.</p>
            <img src="https://placehold.co/300x200.png" alt="Placeholder campo de futebol" data-ai-hint="soccer field" className="mx-auto rounded-md opacity-50"/>
         </CardContent>
       </Card>
     );
   }
   
-  // Team colors can be adjusted to better fit the red theme, or kept for contrast
   const teamColors = [
-    "bg-gradient-to-br from-red-500 to-red-700", // Primary Red
-    "bg-gradient-to-br from-orange-500 to-orange-700", // Orange as secondary
-    "bg-gradient-to-br from-yellow-400 to-yellow-600", // Yellow
-    "bg-gradient-to-br from-gray-500 to-gray-700", // Gray
+    "bg-gradient-to-br from-red-500 to-red-700", 
+    "bg-gradient-to-br from-orange-500 to-orange-700", 
+    "bg-gradient-to-br from-yellow-400 to-yellow-600", 
+    "bg-gradient-to-br from-gray-500 to-gray-700", 
     "bg-gradient-to-br from-pink-500 to-pink-700",
     "bg-gradient-to-br from-rose-500 to-rose-700",
     "bg-gradient-to-br from-amber-500 to-amber-700",
@@ -47,7 +46,7 @@ export function GeneratedTeamsDisplay({ teams, onExportText }: GeneratedTeamsDis
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h2 className="text-3xl font-headline text-foreground flex items-center">
-          <ListChecks className="mr-3 h-8 w-8 text-primary" />
+          <ListChecks className="mr-3 h-8 w-8 text-primary-foreground" />
           Equipes Formadas!
         </h2>
         <Button onClick={onExportText} variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">

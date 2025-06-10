@@ -2,7 +2,7 @@
 "use client";
 
 import type { NextPage } from 'next';
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import { AppHeader } from '@/components/layout/app-header';
 import { GeneratedTeamsDisplay } from '@/components/generated-teams-display';
 import { HistoryDisplay, type HistoryEntry } from '@/components/history-display';
@@ -25,19 +25,23 @@ const Home: NextPage = () => {
   
   const [isLoading, setIsLoading] = useState(false);
   const [drawHistory, setDrawHistory] = useLocalStorage<HistoryEntry[]>('brali_drawHistory', []);
+  const [currentlyDisplayedTeams, setCurrentlyDisplayedTeams] = useState<ApplyPanelinhaRestrictionsOutput | null>(null);
+
+  useEffect(() => {
+    // Initialize currentlyDisplayedTeams from history if available
+    if (drawHistory.length > 0) {
+      setCurrentlyDisplayedTeams(drawHistory[0].teams);
+    } else {
+      setCurrentlyDisplayedTeams(null);
+    }
+  }, [drawHistory]);
+
 
   const allParticipants = useMemo(() => {
     return participantsText.split('\n').map(p => p.trim()).filter(p => p);
   }, [participantsText]);
 
   const participantCount = useMemo(() => allParticipants.length, [allParticipants]);
-
-  const latestTeams = useMemo<ApplyPanelinhaRestrictionsOutput | null>(() => {
-    if (drawHistory.length > 0) {
-      return drawHistory[0].teams;
-    }
-    return null;
-  }, [drawHistory]);
 
   const handleParticipantsChange = useCallback((text: string) => {
     setParticipantsText(text);
@@ -76,9 +80,10 @@ const Home: NextPage = () => {
     setTeamSplitType('byTeamCount');
     setTeamCount('2');
     setPlayersPerTeam('5');
-    setPanelinhaRestrictions([]);
+    setPanelinhaRestrictions(initialPanelinhaRestrictions);
+    setCurrentlyDisplayedTeams(null); // Clear the displayed teams
     toast({ title: "Formulário Limpo", description: "Os campos foram redefinidos para os valores padrão." });
-  }, [setParticipantsText, setTeamSplitType, setTeamCount, setPlayersPerTeam, setPanelinhaRestrictions, toast]);
+  }, [setParticipantsText, setTeamSplitType, setTeamCount, setPlayersPerTeam, setPanelinhaRestrictions, setCurrentlyDisplayedTeams, toast]);
   
   const handleSubmit = useCallback(async () => {
     setIsLoading(true);
@@ -122,9 +127,10 @@ const Home: NextPage = () => {
 
     try {
       const generatedTeams = await applyPanelinhaRestrictions(input);
+      setCurrentlyDisplayedTeams(generatedTeams);
       
       const newHistoryEntry: HistoryEntry = {
-        id: new Date().toISOString() + Math.random().toString(36).substring(2,9), // more unique id
+        id: new Date().toISOString() + Math.random().toString(36).substring(2,9), 
         timestamp: Date.now(),
         teams: generatedTeams,
         settings: {
@@ -152,7 +158,8 @@ const Home: NextPage = () => {
     teamCount, 
     playersPerTeam, 
     panelinhaRestrictions, 
-    setDrawHistory, 
+    setDrawHistory,
+    setCurrentlyDisplayedTeams, 
     toast
   ]);
 
@@ -172,18 +179,19 @@ const Home: NextPage = () => {
   const handleClearHistory = () => {
     if (window.confirm("Tem certeza que deseja limpar todo o histórico de sorteios? Esta ação não pode ser desfeita.")) {
       setDrawHistory([]);
+      setCurrentlyDisplayedTeams(null); // Also clear current display when history is cleared
       toast({ title: "Histórico Limpo", description: "O histórico de sorteios foi apagado." });
     }
   };
   
   const handleExportText = () => {
-    if (!latestTeams) {
+    if (!currentlyDisplayedTeams) {
       toast({ title: "Nada para Exportar", description: "Não há equipes geradas para exportar.", variant: "destructive" });
       return;
     }
 
     let textOutput = "Equipes Geradas - BraLiga Anti-Panela\n\n";
-    latestTeams.forEach((team, index) => {
+    currentlyDisplayedTeams.forEach((team, index) => {
       textOutput += `Time ${String.fromCharCode(65 + index)}:\n`;
       team.forEach((player, playerIndex) => {
         textOutput += `${playerIndex + 1}. ${player}\n`;
@@ -231,7 +239,7 @@ const Home: NextPage = () => {
           <div className="lg:col-span-2 space-y-12">
             <section aria-labelledby="resultados-equipes" className="w-full">
               <GeneratedTeamsDisplay 
-                teams={latestTeams}
+                teams={currentlyDisplayedTeams}
                 onExportText={handleExportText}
               />
             </section>

@@ -88,7 +88,7 @@ export function TeamGeneratorForm({
           />
           <div className="flex justify-between items-center">
             <p className="text-sm text-muted-foreground">
-              Participantes: <span className="font-bold text-white">{participantCount}</span>
+              Participantes: <span className="font-bold text-foreground">{participantCount}</span>
             </p>
             {participantCount < MIN_PARTICIPANTS && participantsText.length > 0 && (
               <p className="text-sm text-destructive">Mínimo de {MIN_PARTICIPANTS} participantes</p>
@@ -120,7 +120,7 @@ export function TeamGeneratorForm({
               >
                 <div className="flex items-center mb-2">
                   <RadioGroupItem value={option.value} id={option.value} className="mr-3 border-white data-[state=checked]:bg-primary data-[state=checked]:border-primary" />
-                  <span className="font-semibold text-white">{option.label}</span>
+                  <span className="font-semibold text-foreground">{option.label}</span>
                 </div>
                 {teamSplitType === option.value && (
                   <Input
@@ -185,7 +185,7 @@ export function TeamGeneratorForm({
               </div>
               {panelinhaRestrictions.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-sm font-medium text-white">Restrições Ativas:</p>
+                  <p className="text-sm font-medium text-foreground">Restrições Ativas:</p>
                   <div className="flex flex-wrap gap-2">
                     {panelinhaRestrictions.map((pair, index) => (
                       <Badge key={index} className="bg-accent text-accent-foreground text-sm py-1 px-3">
