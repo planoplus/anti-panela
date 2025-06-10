@@ -19,7 +19,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Poppins:wght@400;700;900&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased bg-gradient-to-br from-[#213365] via-[#4A90E2] to-[#87CEEB] min-h-screen">
+      <body className="font-body antialiased bg-gradient-to-br from-[#BA1B1B] via-[#D32F2F] to-[#E57373] min-h-screen">
         {children}
         <Toaster />
       </body>

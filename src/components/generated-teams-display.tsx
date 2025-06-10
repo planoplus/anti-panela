@@ -23,33 +23,34 @@ export function GeneratedTeamsDisplay({ teams, onExportText }: GeneratedTeamsDis
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-blue-200 py-8">Nenhuma equipe gerada ainda. Configure e clique em "Gerar Equipes".</p>
+          <p className="text-muted-foreground py-8">Nenhuma equipe gerada ainda. Confira o histórico ou gere novas equipes (se aplicável).</p>
            <img src="https://placehold.co/300x200.png" alt="Placeholder campo de futebol" data-ai-hint="soccer field" className="mx-auto rounded-md opacity-50"/>
         </CardContent>
       </Card>
     );
   }
   
+  // Team colors can be adjusted to better fit the red theme, or kept for contrast
   const teamColors = [
-    "bg-gradient-to-br from-blue-500 to-blue-700",
-    "bg-gradient-to-br from-green-500 to-green-700",
-    "bg-gradient-to-br from-red-500 to-red-700",
-    "bg-gradient-to-br from-yellow-500 to-yellow-700",
-    "bg-gradient-to-br from-purple-500 to-purple-700",
+    "bg-gradient-to-br from-red-500 to-red-700", // Primary Red
+    "bg-gradient-to-br from-orange-500 to-orange-700", // Orange as secondary
+    "bg-gradient-to-br from-yellow-400 to-yellow-600", // Yellow
+    "bg-gradient-to-br from-gray-500 to-gray-700", // Gray
     "bg-gradient-to-br from-pink-500 to-pink-700",
-    "bg-gradient-to-br from-indigo-500 to-indigo-700",
-    "bg-gradient-to-br from-teal-500 to-teal-700",
+    "bg-gradient-to-br from-rose-500 to-rose-700",
+    "bg-gradient-to-br from-amber-500 to-amber-700",
+    "bg-gradient-to-br from-stone-500 to-stone-700",
   ];
 
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-headline text-white flex items-center">
+        <h2 className="text-3xl font-headline text-foreground flex items-center">
           <ListChecks className="mr-3 h-8 w-8 text-primary" />
           Equipes Formadas!
         </h2>
-        <Button onClick={onExportText} variant="outline" className="border-primary text-primary hover:bg-primary/10 hover:text-primary">
+        <Button onClick={onExportText} variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
           <Download className="mr-2 h-5 w-5" />
           Exportar (.txt)
         </Button>
@@ -68,7 +69,7 @@ export function GeneratedTeamsDisplay({ teams, onExportText }: GeneratedTeamsDis
               {team.length > 0 ? (
                 <ul className="space-y-2">
                   {team.map((player, playerIndex) => (
-                    <li key={playerIndex} className="flex items-center text-foreground text-lg p-2 rounded bg-white/10">
+                    <li key={playerIndex} className="flex items-center text-foreground text-lg p-2 rounded bg-background">
                       <span className="text-primary font-semibold mr-3">{playerIndex + 1}.</span>
                       {player}
                     </li>
