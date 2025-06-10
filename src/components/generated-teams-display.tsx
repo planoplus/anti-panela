@@ -25,7 +25,6 @@ export function GeneratedTeamsDisplay({ teams, onExportText, onClearDisplayedTea
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground py-8">Nenhuma equipe gerada ainda. Configure e gere novas equipes ou verifique o histórico.</p>
-           <img src="https://placehold.co/300x200.png" alt="Placeholder campo de futebol" data-ai-hint="soccer field" className="mx-auto rounded-md opacity-50"/>
         </CardContent>
       </Card>
     );
