@@ -5,10 +5,11 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { AppHeader } from '@/components/layout/app-header';
 import { TeamGeneratorForm } from '@/components/team-generator-form';
 import { GeneratedTeamsDisplay } from '@/components/generated-teams-display';
+import { HistoryDisplay, type HistoryEntry } from '@/components/history-display';
 import { applyPanelinhaRestrictions, type ApplyPanelinhaRestrictionsInput, type ApplyPanelinhaRestrictionsOutput } from '@/ai/flows/apply-panelinha-restrictions';
 import { useLocalStorage } from '@/hooks/use-local-storage';
 import { useToast } from "@/hooks/use-toast";
-import { INITIAL_PARTICIPANTS_LIST, MIN_PARTICIPANTS } from '@/lib/constants';
+import { INITIAL_PARTICIPANTS_LIST, MIN_PARTICIPANTS, MAX_HISTORY_ITEMS } from '@/lib/constants';
 
 const initialPanelinhaRestrictions: string[][] = [];
 
@@ -22,6 +23,8 @@ const Home: NextPage = () => {
   const [panelinhaRestrictions, setPanelinhaRestrictions] = useLocalStorage<string[][]>('brali_panelinhaRestrictions', initialPanelinhaRestrictions);
   
   const [generatedTeams, setGeneratedTeams] = useLocalStorage<ApplyPanelinhaRestrictionsOutput | null>('brali_generatedTeams', null);
+  const [drawHistory, setDrawHistory] = useLocalStorage<HistoryEntry[]>('brali_drawHistory', []);
+  
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -34,7 +37,7 @@ const Home: NextPage = () => {
 
   const handleParticipantsChange = (text: string) => {
     setParticipantsText(text);
-    setGeneratedTeams(null); // Clear old teams when participants change
+    setGeneratedTeams(null); 
   };
 
   const handleAddRestriction = (pair: [string, string]) => {
@@ -73,15 +76,20 @@ const Home: NextPage = () => {
       panelinhaRestrictions: panelinhaRestrictions,
     };
 
+    let currentTeamCount: number | undefined;
+    let currentPlayersPerTeam: number | undefined;
+
     if (teamSplitType === 'byTeamCount') {
-      input.teamCount = parseInt(teamCountStr);
+      currentTeamCount = parseInt(teamCountStr);
+      input.teamCount = currentTeamCount;
       if (input.teamCount > participantCount) {
         toast({ title: "Erro na Configuração", description: "Número de times não pode ser maior que o número de participantes.", variant: "destructive"});
         setIsLoading(false);
         return;
       }
     } else {
-      input.playersPerTeam = parseInt(playersPerTeamStr);
+      currentPlayersPerTeam = parseInt(playersPerTeamStr);
+      input.playersPerTeam = currentPlayersPerTeam;
        if (input.playersPerTeam > participantCount) {
         toast({ title: "Erro na Configuração", description: "Número de jogadores por time não pode ser maior que o número de participantes.", variant: "destructive"});
         setIsLoading(false);
@@ -92,7 +100,22 @@ const Home: NextPage = () => {
     try {
       const result = await applyPanelinhaRestrictions(input);
       setGeneratedTeams(result);
-      toast({ title: "Equipes Geradas!", description: "Confira os times abaixo.", className: "bg-primary text-primary-foreground" });
+      
+      const newHistoryEntry: HistoryEntry = {
+        id: Date.now().toString() + Math.random().toString(36).substring(2, 15),
+        timestamp: Date.now(),
+        teams: result,
+        settings: {
+          participants: [...participantsList],
+          teamSplitType,
+          teamCount: currentTeamCount,
+          playersPerTeam: currentPlayersPerTeam,
+          panelinhaRestrictions: panelinhaRestrictions.map(pair => [...pair]), // Deep copy
+        }
+      };
+      setDrawHistory(prevHistory => [newHistoryEntry, ...prevHistory].slice(0, MAX_HISTORY_ITEMS));
+
+      toast({ title: "Equipes Geradas!", description: "Confira os times abaixo e no histórico.", className: "bg-primary text-primary-foreground" });
     } catch (e: any) {
       console.error("Error generating teams:", e);
       setError(e.message || "Falha ao gerar equipes.");
@@ -104,7 +127,7 @@ const Home: NextPage = () => {
   };
 
   const handleClearForm = () => {
-    if (window.confirm("Tem certeza que deseja limpar todas as configurações?")) {
+    if (window.confirm("Tem certeza que deseja limpar todas as configurações do formulário? O histórico não será afetado.")) {
       setParticipantsText(INITIAL_PARTICIPANTS_LIST);
       setTeamSplitType('byTeamCount');
       setTeamCountStr('2');
@@ -112,7 +135,14 @@ const Home: NextPage = () => {
       setPanelinhaRestrictions([]);
       setGeneratedTeams(null);
       setError(null);
-      toast({ title: "Formulário Limpo", description: "Todas as configurações foram redefinidas." });
+      toast({ title: "Formulário Limpo", description: "As configurações do formulário foram redefinidas." });
+    }
+  };
+
+  const handleClearHistory = () => {
+    if (window.confirm("Tem certeza que deseja limpar todo o histórico de sorteios? Esta ação não pode ser desfeita.")) {
+      setDrawHistory([]);
+      toast({ title: "Histórico Limpo", description: "O histórico de sorteios foi apagado." });
     }
   };
   
@@ -179,6 +209,9 @@ const Home: NextPage = () => {
             />
           </section>
         </div>
+        <section aria-labelledby="historico-sorteios" className="w-full mt-12">
+          <HistoryDisplay history={drawHistory} onClearHistory={handleClearHistory} />
+        </section>
       </main>
       <footer className="text-center py-4 text-sm text-white/70 bg-black/10">
         BraLiga Anti-Panela &copy; {new Date().getFullYear()}

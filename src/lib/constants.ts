@@ -22,3 +22,4 @@ Artulanez
 Erick Silvestre`;
 
 export const MIN_PARTICIPANTS = 2;
+export const MAX_HISTORY_ITEMS = 20;

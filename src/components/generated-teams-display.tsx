@@ -17,7 +17,7 @@ export function GeneratedTeamsDisplay({ teams, onExportText }: GeneratedTeamsDis
     return (
       <Card className="bg-card/70 border-accent shadow-xl text-center">
         <CardHeader>
-          <CardTitle className="text-2xl flex items-center justify-center text-white">
+          <CardTitle className="text-2xl flex items-center justify-center text-card-foreground">
             <ListChecks className="mr-3 h-8 w-8 text-primary" />
             Equipes Geradas
           </CardTitle>
