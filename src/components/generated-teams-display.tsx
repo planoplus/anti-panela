@@ -3,16 +3,17 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ListChecks, Download } from 'lucide-react';
+import { ListChecks, Download, Trash2 } from 'lucide-react';
 import { SoccerBallIcon } from '@/components/icons/soccer-ball-icon';
 import type { ApplyPanelinhaRestrictionsOutput } from '@/ai/flows/apply-panelinha-restrictions';
 
 interface GeneratedTeamsDisplayProps {
   teams: ApplyPanelinhaRestrictionsOutput | null;
   onExportText: () => void;
+  onClearDisplayedTeams: () => void;
 }
 
-export function GeneratedTeamsDisplay({ teams, onExportText }: GeneratedTeamsDisplayProps) {
+export function GeneratedTeamsDisplay({ teams, onExportText, onClearDisplayedTeams }: GeneratedTeamsDisplayProps) {
   if (!teams || teams.length === 0) {
     return (
       <Card className="bg-card/70 border-accent shadow-xl text-center">
@@ -44,15 +45,21 @@ export function GeneratedTeamsDisplay({ teams, onExportText }: GeneratedTeamsDis
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-2">
         <h2 className="text-3xl font-headline text-foreground flex items-center">
           <ListChecks className="mr-3 h-8 w-8 text-primary-foreground" />
           Equipes Formadas!
         </h2>
-        <Button onClick={onExportText} variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-          <Download className="mr-2 h-5 w-5" />
-          Exportar (.txt)
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={onExportText} variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+            <Download className="mr-2 h-5 w-5" />
+            Exportar (.txt)
+          </Button>
+          <Button onClick={onClearDisplayedTeams} variant="destructive" size="sm" className="bg-destructive/90 hover:bg-destructive text-destructive-foreground">
+            <Trash2 className="mr-2 h-4 w-4" />
+            Excluir times
+          </Button>
+        </div>
       </div>
       
       <div className="grid md:grid-cols-2 gap-6">

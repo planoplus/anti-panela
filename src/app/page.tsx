@@ -28,13 +28,12 @@ const Home: NextPage = () => {
   const [currentlyDisplayedTeams, setCurrentlyDisplayedTeams] = useState<ApplyPanelinhaRestrictionsOutput | null>(null);
 
   useEffect(() => {
-    // Initialize currentlyDisplayedTeams from history if available
-    if (drawHistory.length > 0) {
+    // Initialize currentlyDisplayedTeams from history if available and no teams are currently set (e.g. after a refresh)
+    if (drawHistory.length > 0 && !currentlyDisplayedTeams) {
       setCurrentlyDisplayedTeams(drawHistory[0].teams);
-    } else {
-      setCurrentlyDisplayedTeams(null);
     }
-  }, [drawHistory]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [drawHistory]); // Only run when drawHistory changes
 
 
   const allParticipants = useMemo(() => {
@@ -81,8 +80,8 @@ const Home: NextPage = () => {
     setTeamCount('2');
     setPlayersPerTeam('5');
     setPanelinhaRestrictions(initialPanelinhaRestrictions);
-    setCurrentlyDisplayedTeams(null); // Clear the displayed teams
-    toast({ title: "Formulário Limpo", description: "Os campos foram redefinidos para os valores padrão." });
+    setCurrentlyDisplayedTeams(null);
+    toast({ title: "Formulário Limpo", description: "Os campos foram redefinidos e a exibição de times foi limpa." });
   }, [setParticipantsText, setTeamSplitType, setTeamCount, setPlayersPerTeam, setPanelinhaRestrictions, setCurrentlyDisplayedTeams, toast]);
   
   const handleSubmit = useCallback(async () => {
@@ -179,7 +178,7 @@ const Home: NextPage = () => {
   const handleClearHistory = () => {
     if (window.confirm("Tem certeza que deseja limpar todo o histórico de sorteios? Esta ação não pode ser desfeita.")) {
       setDrawHistory([]);
-      setCurrentlyDisplayedTeams(null); // Also clear current display when history is cleared
+      setCurrentlyDisplayedTeams(null); 
       toast({ title: "Histórico Limpo", description: "O histórico de sorteios foi apagado." });
     }
   };
@@ -208,6 +207,12 @@ const Home: NextPage = () => {
     document.body.removeChild(link);
     toast({ title: "Exportado!", description: "As equipes foram salvas como arquivo de texto." });
   };
+
+  const handleClearDisplayedTeams = () => {
+    setCurrentlyDisplayedTeams(null);
+    toast({ title: "Visualização Limpa", description: "As equipes exibidas foram removidas da tela." });
+  };
+
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -241,6 +246,7 @@ const Home: NextPage = () => {
               <GeneratedTeamsDisplay 
                 teams={currentlyDisplayedTeams}
                 onExportText={handleExportText}
+                onClearDisplayedTeams={handleClearDisplayedTeams}
               />
             </section>
             
