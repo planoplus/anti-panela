@@ -10,6 +10,8 @@ import { useLocalStorage } from '@/hooks/use-local-storage';
 import { useToast } from "@/hooks/use-toast";
 import { INITIAL_PARTICIPANTS_LIST, MIN_PARTICIPANTS } from '@/lib/constants';
 
+const initialPanelinhaRestrictions: string[][] = [];
+
 const Home: NextPage = () => {
   const { toast } = useToast();
 
@@ -17,7 +19,7 @@ const Home: NextPage = () => {
   const [teamSplitType, setTeamSplitType] = useLocalStorage<'byTeamCount' | 'byPlayerCount'>('brali_teamSplitType', 'byTeamCount');
   const [teamCountStr, setTeamCountStr] = useLocalStorage<string>('brali_teamCountStr', '2');
   const [playersPerTeamStr, setPlayersPerTeamStr] = useLocalStorage<string>('brali_playersPerTeamStr', '5');
-  const [panelinhaRestrictions, setPanelinhaRestrictions] = useLocalStorage<string[][]>('brali_panelinhaRestrictions', []);
+  const [panelinhaRestrictions, setPanelinhaRestrictions] = useLocalStorage<string[][]>('brali_panelinhaRestrictions', initialPanelinhaRestrictions);
   
   const [generatedTeams, setGeneratedTeams] = useLocalStorage<ApplyPanelinhaRestrictionsOutput | null>('brali_generatedTeams', null);
   const [isLoading, setIsLoading] = useState(false);
