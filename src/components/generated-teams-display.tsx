@@ -3,8 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ListChecks, Download, Trash2 } from 'lucide-react';
-import { SoccerBallIcon } from '@/components/icons/soccer-ball-icon';
+import { ListChecks, Download, Trash2, Users } from 'lucide-react';
 import type { ApplyPanelinhaRestrictionsOutput } from '@/ai/flows/apply-panelinha-restrictions';
 
 interface GeneratedTeamsDisplayProps {
@@ -66,7 +65,7 @@ export function GeneratedTeamsDisplay({ teams, onExportText, onClearDisplayedTea
           <Card key={index} className="bg-card/80 border-accent shadow-lg overflow-hidden transition-all hover:shadow-xl hover:scale-[1.02]">
             <CardHeader className={`p-4 text-white ${teamColors[index % teamColors.length]}`}>
               <CardTitle className="text-2xl flex items-center">
-                <SoccerBallIcon className="mr-2 h-6 w-6" />
+                <Users className="mr-2 h-6 w-6" />
                 Time {String.fromCharCode(65 + index)}
               </CardTitle>
             </CardHeader>

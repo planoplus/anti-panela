@@ -4,11 +4,10 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, Users, ShieldAlert, Trash2, ListChecks, Settings, PackageOpen, Users2 } from 'lucide-react';
+import { CalendarDays, Users as UsersIcon, ShieldAlert, Trash2, ListChecks, Settings, PackageOpen, Users2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import type { ApplyPanelinhaRestrictionsOutput } from '@/ai/flows/apply-panelinha-restrictions';
-import { SoccerBallIcon } from '@/components/icons/soccer-ball-icon';
 import { Badge } from "@/components/ui/badge";
 
 export interface HistoryEntry {
@@ -111,7 +110,7 @@ export function HistoryDisplay({ history, onClearHistory }: HistoryDisplayProps)
                         <Card key={teamIndex} className="bg-card/50 border-accent shadow-sm overflow-hidden">
                           <CardHeader className={`p-3 text-white ${teamColors[teamIndex % teamColors.length]}`}>
                             <CardTitle className="text-xl flex items-center">
-                              <SoccerBallIcon className="mr-2 h-5 w-5" />
+                              <UsersIcon className="mr-2 h-5 w-5" />
                               Time {String.fromCharCode(65 + teamIndex)}
                             </CardTitle>
                           </CardHeader>
