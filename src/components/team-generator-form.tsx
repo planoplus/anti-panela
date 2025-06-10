@@ -74,7 +74,7 @@ export function TeamGeneratorForm({
       <CardContent className="space-y-8 p-6">
         {/* Participants Section */}
         <div className="space-y-3">
-          <Label htmlFor="participants" className="text-xl flex items-center text-white">
+          <Label htmlFor="participants" className="text-xl flex items-center text-muted-foreground">
             <Users className="mr-2 h-6 w-6 text-primary" />
             Lista de Participantes
           </Label>
@@ -87,7 +87,7 @@ export function TeamGeneratorForm({
             className={`bg-white/90 border-2 ${participantCount < MIN_PARTICIPANTS && participantsText.length > 0 ? 'border-destructive focus:ring-destructive' : 'border-primary/50 focus:border-primary'} text-foreground min-h-[150px] resize-y`}
           />
           <div className="flex justify-between items-center">
-            <p className="text-sm text-blue-200">
+            <p className="text-sm text-muted-foreground">
               Participantes: <span className="font-bold text-white">{participantCount}</span>
             </p>
             {participantCount < MIN_PARTICIPANTS && participantsText.length > 0 && (
@@ -98,7 +98,7 @@ export function TeamGeneratorForm({
 
         {/* Team Configuration Section */}
         <div className="space-y-3">
-          <Label className="text-xl flex items-center text-white">
+          <Label className="text-xl flex items-center text-muted-foreground">
             <Settings2 className="mr-2 h-6 w-6 text-primary" />
             Como dividir os times?
           </Label>
@@ -140,16 +140,16 @@ export function TeamGeneratorForm({
 
         {/* Panelinha Firewall Section */}
         <div className="space-y-3">
-          <Label className="text-xl flex items-center text-white">
+          <Label className="text-xl flex items-center text-muted-foreground">
             <ShieldAlert className="mr-2 h-6 w-6 text-primary" />
             🚫 Firewall da Panela
           </Label>
-          <p className="text-sm text-blue-200">Jogadores que NÃO podem ficar no mesmo time.</p>
+          <p className="text-sm text-muted-foreground">Jogadores que NÃO podem ficar no mesmo time.</p>
           <Card className="bg-white/20 p-4 border-primary/30">
             <CardContent className="p-0">
               <div className="flex flex-col sm:flex-row gap-2 mb-3 items-end">
                 <div className="flex-1 w-full sm:w-auto">
-                  <Label htmlFor="player1" className="text-xs text-blue-200">Jogador 1</Label>
+                  <Label htmlFor="player1" className="text-xs text-muted-foreground">Jogador 1</Label>
                    <Select value={restrictionPlayer1} onValueChange={setRestrictionPlayer1}>
                     <SelectTrigger id="player1" className="w-full bg-white/90 border-primary/50 text-foreground">
                       <SelectValue placeholder="Selecione Jogador 1" />
@@ -162,7 +162,7 @@ export function TeamGeneratorForm({
                   </Select>
                 </div>
                 <div className="flex-1 w-full sm:w-auto">
-                  <Label htmlFor="player2" className="text-xs text-blue-200">Jogador 2</Label>
+                  <Label htmlFor="player2" className="text-xs text-muted-foreground">Jogador 2</Label>
                   <Select value={restrictionPlayer2} onValueChange={setRestrictionPlayer2}>
                     <SelectTrigger id="player2" className="w-full bg-white/90 border-primary/50 text-foreground">
                       <SelectValue placeholder="Selecione Jogador 2" />
