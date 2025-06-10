@@ -6,6 +6,13 @@ export function AppHeader() {
     <header className="py-6 text-center text-white shadow-md bg-black/20">
       <div className="container mx-auto">
         <div className="flex flex-col sm:flex-row items-center justify-center mb-1">
+          {/* <Image
+            src="/logo-bra.png"
+            alt="Logomarca BRA"
+            width={160}
+            height={160}
+            className="mr-0 sm:mr-3 mb-2 sm:mb-0"
+          /> */}
           <h1 className="text-3xl md:text-4xl font-headline">
             <strong className="font-black">BraLiga</strong> - <span className="font-normal text-white/80">Edition: Anti-Panela</span>
           </h1>
